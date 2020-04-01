@@ -1,20 +1,14 @@
 package com.giuseppepapalia.questrade;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -59,63 +53,6 @@ public class QuestradeClient {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	@SuppressWarnings("unused")
-	private JsonObject post(String suffix, Map<String, String> postDataParams) {
-		try {
-			URL url = new URL(api.getServer() + suffix);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Authorization", api.getAuthorization());
-			conn.setDoInput(true);
-			conn.setDoOutput(true);
-
-			if (conn.getResponseCode() != 200) {
-				throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
-			}
-
-			OutputStream os = conn.getOutputStream();
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-			writer.write(getPostDataString(postDataParams));
-
-			writer.flush();
-			writer.close();
-			os.close();
-			int responseCode = conn.getResponseCode();
-
-			if (responseCode == HttpsURLConnection.HTTP_OK) {
-				String line;
-				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-				JsonObject obj = new Gson().fromJson(br.readLine(), JsonObject.class);
-				conn.disconnect();
-				return obj;
-			} else {
-				throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	private String getPostDataString(Map<String, String> params) throws UnsupportedEncodingException {
-		StringBuilder result = new StringBuilder();
-		boolean first = true;
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			if (first)
-				first = false;
-			else
-				result.append("&");
-
-			result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-			result.append("=");
-			result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-		}
-
-		return result.toString();
 	}
 
 	public Stock getStock(String symbol) {

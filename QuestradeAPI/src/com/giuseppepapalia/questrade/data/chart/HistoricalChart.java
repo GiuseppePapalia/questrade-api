@@ -13,6 +13,9 @@ public class HistoricalChart extends AbstractChart {
 	protected List<Double> setMaxima() {
 		maxima = new ArrayList<Double>();
 
+		/*
+		 * Skip over the first and last candle because we don't know their neighbors and therefore cannot declare it a maxima or minima
+		 */
 		for (int i = 1; i < candles.size() - 1; i++) {
 			if (candles.get(i - 1).getHighPrice() < candles.get(i).getHighPrice() && candles.get(i).getHighPrice() > candles.get(i + 1).getHighPrice()) {
 				maxima.add(candles.get(i).getHighPrice());
@@ -26,6 +29,9 @@ public class HistoricalChart extends AbstractChart {
 	protected List<Double> setMinima() {
 		minima = new ArrayList<Double>();
 
+		/*
+		 * Skip over the first and last candle because we don't know their neighbors and therefore cannot declare it a maxima or minima
+		 */
 		for (int i = 1; i < candles.size() - 1; i++) {
 			if (candles.get(i - 1).getLowPrice() > candles.get(i).getLowPrice() && candles.get(i).getLowPrice() < candles.get(i + 1).getLowPrice()) {
 				minima.add(candles.get(i).getLowPrice());

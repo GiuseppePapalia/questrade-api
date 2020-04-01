@@ -13,7 +13,7 @@ public class Test {
 
 	public static void main(String args[]) throws Exception {
 
-		QuestradeAPI api = new QuestradeAPI("GKzQ0NkAl1guLwm7WAGTnVlLCqGuHpQ_0");
+		QuestradeAPI api = new QuestradeAPI("access token");
 		QuestradeClient client = new QuestradeClient(api);
 		Stock stock = client.getStock("SPY");
 		Date startDate = new SimpleDateFormat("dd:MM:yyyy hh:mm").parse("01:01:2019 09:30");
