@@ -28,7 +28,17 @@ public class Position {
 			for (int i = 0; i < symbol.length(); i++) {
 				if (Character.isDigit(symbol.charAt(i))) {
 					ticker = symbol.substring(0, i);
-					symbol = symbol.replaceAll(ticker, "");
+					symbol = symbol.replace(ticker, "");
+					break;
+				}
+			}
+
+			// Need to add a zero in front of single digit days because questrade is retarded and formats their dates as 3/Apr/20
+			for (int i = 0; i < symbol.length(); i++) {
+				if (!Character.isDigit(symbol.charAt(i))) {
+					if (i < 2) {
+						symbol = String.join("0", symbol);
+					}
 					break;
 				}
 			}
@@ -40,7 +50,7 @@ public class Position {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			symbol = symbol.replaceAll(f.format(expiryDate), "");
+			symbol = symbol.replace(f.format(expiryDate), "");
 
 			OptionType optionType = OptionType.parse(symbol.charAt(0) + "");
 			symbol = symbol.substring(1);
@@ -49,6 +59,18 @@ public class Position {
 			underlying = new Option(ticker, id, expiryDate, optionType, strikePrice);
 		} else {
 			underlying = new Stock(symbol, id);
+		}
+	}
+
+	public static void main(String args[]) {
+		SimpleDateFormat f = new SimpleDateFormat("ddMMMyy");
+		try {
+			String symbol = "03Apr20P244.00";
+			Date d = f.parse(symbol);
+			System.out.println(symbol.replace(f.format(d), ""));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
