@@ -23,7 +23,7 @@ public class Position {
 	 */
 	private void setUnderlying(String symbol, int id) {
 		// TODO: rework this terrible regex logic if the String is greater than 4 letters (ie an option)
-		if (symbol.length() > 4) {
+		if (symbol.matches(".*\\d.*")) {
 			String ticker = null;
 			for (int i = 0; i < symbol.length(); i++) {
 				if (Character.isDigit(symbol.charAt(i))) {
