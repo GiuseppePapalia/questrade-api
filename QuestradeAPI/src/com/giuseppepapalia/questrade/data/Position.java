@@ -34,13 +34,8 @@ public class Position {
 			}
 
 			// Need to add a zero in front of single digit days because questrade is retarded and formats their dates as 3/Apr/20
-			for (int i = 0; i < symbol.length(); i++) {
-				if (!Character.isDigit(symbol.charAt(i))) {
-					if (i < 2) {
-						symbol = String.join("0", symbol);
-					}
-					break;
-				}
+			if (!Character.isDigit(symbol.charAt(1))) {
+				symbol = "0" + symbol;
 			}
 
 			SimpleDateFormat f = new SimpleDateFormat("ddMMMyy");
